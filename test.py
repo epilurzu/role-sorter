@@ -11,8 +11,8 @@ def delete_unicode(string):
 
 
 def cyrillic_to_english(string):
-    cyrillic_alphabet = "АВЕЅZІКМНОРСТХШѴУ"
-    english_alphabet = "ABESZIKMHOPCTXWVY"
+    cyrillic_alphabet = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЪЫЬЭЮЯ"
+    english_alphabet = "ABVGDEEJZIJKLMNOPRSTUFHZCSS_Y_EUA"
 
     for i in range(0, len(cyrillic_alphabet)):
         if cyrillic_alphabet[i] in string:
@@ -30,12 +30,13 @@ def split_strings_in_list(list, split_char):
     return new_list
 
 
-# this function splits different roles from string to list
+# string_to_list splits different roles from string to list
 # ""Advisor & ceo"" ---> ["ADVISOR", "CEO"]
 def string_to_list(string):
     roles = []
 
-    string = string[1:-1]  # remove double quotes
+    string = string.replace('"', '')  # remove double quotes
+    string = string.replace('“', '')  # remove left quotes
     string = delete_unicode(string)  # remove weird unicodes
     string = string.upper()  # all uppercase
     string = cyrillic_to_english(string)  # convert cyrillic
@@ -55,7 +56,6 @@ def string_to_list(string):
 
 def get_list_of_roles(icos):
     list_of_roles = []
-    n_people = 0
 
     for ico in icos:
         team = ico['team']
@@ -63,12 +63,11 @@ def get_list_of_roles(icos):
         for person in team:
             string = json.dumps(person['role'], ensure_ascii=False)  # convert unicodes
             list_of_roles = list_of_roles + string_to_list(string)
-            n_people = n_people + 1
 
     return sorted(list_of_roles)
 
 
-def get_set_of_roles(icos, list_of_roles):
+def get_set_of_roles(list_of_roles):
     set_of_roles = set([])
 
     for role in list_of_roles:
@@ -77,7 +76,7 @@ def get_set_of_roles(icos, list_of_roles):
     return sorted(set_of_roles)
 
 
-def get_dict_of_roles(icos, list_of_roles, set_of_roles):
+def get_dict_of_roles(list_of_roles, set_of_roles):
     dict_of_roles = {}
 
     for role in set_of_roles:
@@ -89,6 +88,25 @@ def get_dict_of_roles(icos, list_of_roles, set_of_roles):
     return dict_of_roles
 
 
+def dict_to_rank(dict):
+    rank = []
+
+    list = sorted(dict.items(), reverse=True, key=lambda x: x[1])
+
+    for tuple in list:
+        rank.append(str(tuple[1]) + " " + tuple[0])
+
+    return rank
+
+
+def write_to_file(file_name, list_of_lines):
+    with open(file_name, 'w') as file:
+        for i in range(0, len(list_of_lines) - 1):
+            line = list_of_lines[i] + "\n"
+            file.write(line)
+        file.write(list_of_lines[len(list_of_lines) - 1])
+
+
 with open('2019-09-19/ICOBench_ended_2019-09-19.json', 'r') as file:
     icos = json.load(file)
 
@@ -98,20 +116,19 @@ with open('2019-09-19/ICOBench_ongoing_2019-09-19.json', 'r') as file:
 with open('2019-09-19/ICOBench_upcoming_2019-09-19.json', 'r') as file:
     icos = icos + json.load(file)
 
-t0= time.clock()
+t0 = time.clock()
 list_of_roles = get_list_of_roles(icos)
 print("End get_list_of_roles in ", time.clock() - t0, " s\n")
 
-t0= time.clock()
-set_of_roles = get_set_of_roles(icos, list_of_roles)
+t0 = time.clock()
+set_of_roles = get_set_of_roles(list_of_roles)
 print("End get_set_of_roles in ", time.clock() - t0, " s\n")
 
-t0= time.clock()
-dict_of_roles = get_dict_of_roles(icos, list_of_roles, set_of_roles)
+t0 = time.clock()
+dict_of_roles = get_dict_of_roles(list_of_roles, set_of_roles)
 print("End get_dict_of_roles in ", time.clock() - t0, " s\n")
 
-rank_of_roles = sorted(dict_of_roles.items(), reverse=True, key=lambda x: x[1])
-with open('rank_of_roles_v01.txt', 'w') as file:
-    for tuple in rank_of_roles:
-        line = str(tuple[1]) + " " + tuple[0] + "\n"
-        file.write(line)
+t0 = time.clock()
+rank_of_roles = dict_to_rank(dict_of_roles)
+write_to_file("rank_of_roles_v01.txt", rank_of_roles)
+print("Printed on file in ", time.clock() - t0, " s\n")
