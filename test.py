@@ -1,5 +1,8 @@
+import os
 import json
-import time
+import csv
+# install with: pip install python-Levenshtein
+from Levenshtein import distance
 
 
 def delete_unicode(string):
@@ -88,6 +91,29 @@ def get_dict_of_roles(list_of_roles, set_of_roles):
     return dict_of_roles
 
 
+def get_list_from_file(path_to_file):
+    list = []
+    with open(path_to_file, 'r') as file:
+        for line in file:
+            list.append(line.rstrip("\n"))
+
+    return list
+
+
+def get_set_from_file(path_to_file):
+    return sorted(set(get_list_from_file(path_to_file)))
+
+
+def get_dict_from_file(path_to_file):
+    dict_of_roles = {}
+    with open(path_to_file, 'r') as file:
+        reader = csv.reader(file)
+        for line in reader:
+            dict_of_roles.update({line[1]: line[0]})
+
+    return dict_of_roles
+
+
 def dict_to_rank(dict):
     rank = []
 
@@ -99,36 +125,57 @@ def dict_to_rank(dict):
     return rank
 
 
-def write_to_file(file_name, list_of_lines):
-    with open(file_name, 'w') as file:
+def write_list_to_file(path_to_file, list_of_lines):
+    with open(path_to_file, 'w') as file:
         for i in range(0, len(list_of_lines) - 1):
             line = list_of_lines[i] + "\n"
             file.write(line)
         file.write(list_of_lines[len(list_of_lines) - 1])
 
 
-with open('2019-09-19/ICOBench_ended_2019-09-19.json', 'r') as file:
-    icos = json.load(file)
+def write_dict_to_file(path_to_file, dict):
+    with open("temp.csv", 'w') as temp_file:
+        for key in dict:
+            temp_file.write("%s,%s\n" % (dict[key], key))
 
-with open('2019-09-19/ICOBench_ongoing_2019-09-19.json', 'r') as file:
-    icos = icos + json.load(file)
+    with open("temp.csv", 'r') as temp_file:
+        data = temp_file.read()
+        with open(path_to_file, 'w') as file:
+            file.write(data[:-1])
 
-with open('2019-09-19/ICOBench_upcoming_2019-09-19.json', 'r') as file:
-    icos = icos + json.load(file)
+    os.remove("temp.csv")
 
-t0 = time.clock()
-list_of_roles = get_list_of_roles(icos)
-print("End get_list_of_roles in ", time.clock() - t0, " s\n")
 
-t0 = time.clock()
-set_of_roles = get_set_of_roles(list_of_roles)
-print("End get_set_of_roles in ", time.clock() - t0, " s\n")
+def populate_files():
+    with open('2019-09-19/ICOBench_ended_2019-09-19.json', 'r') as file:
+        icos = json.load(file)
 
-t0 = time.clock()
-dict_of_roles = get_dict_of_roles(list_of_roles, set_of_roles)
-print("End get_dict_of_roles in ", time.clock() - t0, " s\n")
+    with open('2019-09-19/ICOBench_ongoing_2019-09-19.json', 'r') as file:
+        icos = icos + json.load(file)
 
-t0 = time.clock()
-rank_of_roles = dict_to_rank(dict_of_roles)
-write_to_file("rank_of_roles_v01.txt", rank_of_roles)
-print("Printed on file in ", time.clock() - t0, " s\n")
+    with open('2019-09-19/ICOBench_upcoming_2019-09-19.json', 'r') as file:
+        icos = icos + json.load(file)
+
+    list_of_roles = get_list_of_roles(icos)
+    set_of_roles = get_set_of_roles(list_of_roles)
+    dict_of_roles = get_dict_of_roles(list_of_roles, set_of_roles)
+    rank_of_roles = dict_to_rank(dict_of_roles)
+
+    write_list_to_file("parsed_data/list_of_roles.csv", list_of_roles)
+    write_list_to_file("parsed_data/set_of_roles.csv", set_of_roles)
+    write_dict_to_file("parsed_data/dict_of_roles.csv", dict_of_roles)
+    write_list_to_file("parsed_data/rank_of_roles.csv", rank_of_roles)
+
+
+# populate_files() #when files need be created
+
+list_of_roles = get_list_from_file("parsed_data/list_of_roles.csv")
+set_of_roles = get_set_from_file("parsed_data/set_of_roles.csv")
+dict_of_roles = get_dict_from_file("parsed_data/dict_of_roles.csv")
+rank_of_roles = get_list_from_file("parsed_data/rank_of_roles.csv")
+
+
+for s in rank_of_roles:
+    print(s)
+
+
