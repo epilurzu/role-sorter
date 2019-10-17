@@ -1,14 +1,15 @@
 import os
+import math
+import re
 import json
 import csv
-# install with: pip install python-Levenshtein
 from Levenshtein import distance
 
 
 def delete_unicode(string):
     string = string.replace(u'\u200c', '')
     string = string.replace(u'\u200e', '')
-    string = string.replace(u'\u2013', '')  # todo: this?
+    string = string.replace(u'\u2013', '')
 
     return string
 
@@ -38,8 +39,8 @@ def split_strings_in_list(list, split_char):
 def string_to_list(string):
     roles = []
 
-    string = string.replace('"', '')  # remove double quotes
-    string = string.replace('“', '')  # remove left quotes
+    #string = string.replace('"', '')  # remove double quotes
+    #string = string.replace('“', '')  # remove left quotes
     string = delete_unicode(string)  # remove weird unicodes
     string = string.upper()  # all uppercase
     string = cyrillic_to_english(string)  # convert cyrillic
@@ -51,7 +52,10 @@ def string_to_list(string):
     roles = split_strings_in_list(roles, "/")
     roles = split_strings_in_list(roles, "\\")
 
+    roles = [re.sub("[^ A-Z]+", "", role) for role in roles]  # remove all special chars and numbers
+    roles = [re.sub(r"\b[A-Z]\b", "", role) for role in roles] # remove single char
     roles = [role.strip() for role in roles]  # remove useless spaces
+    roles = [re.sub("\s+", " ", role) for role in roles]  # multiple spaces as one
     roles = list(filter(None, roles))  # remove ""
 
     return roles
@@ -146,7 +150,7 @@ def write_dict_to_file(path_to_file, dict):
     os.remove("temp.csv")
 
 
-def populate_files():
+def populate_csv_files():
     with open('2019-09-19/ICOBench_ended_2019-09-19.json', 'r') as file:
         icos = json.load(file)
 
@@ -167,15 +171,65 @@ def populate_files():
     write_list_to_file("parsed_data/rank_of_roles.csv", rank_of_roles)
 
 
-# populate_files() #when files need be created
+def role_to_json(json_of_roles, unallocated_workers, unallocated_role):
+    min_distance = 3
+    best_fit_role = ""
 
-list_of_roles = get_list_from_file("parsed_data/list_of_roles.csv")
-set_of_roles = get_set_from_file("parsed_data/set_of_roles.csv")
-dict_of_roles = get_dict_from_file("parsed_data/dict_of_roles.csv")
-rank_of_roles = get_list_from_file("parsed_data/rank_of_roles.csv")
+    for role in json_of_roles:
+        if role['name'] == "UNCERTAIN":
+            break
+
+        examples = role['examples']
 
 
-for s in rank_of_roles:
-    print(s)
+        for example in examples:
+            dis = distance(example, unallocated_role)
+
+            if dis < min_distance:
+                min_distance = dis
+                best_fit_role = role['name']
+
+    if min_distance > 2: # unallocated_role not found in examples...
+        if (' ' in unallocated_role): # ... maybe its substrings can be found...
+            middle_space = (len(unallocated_role.split(" ")) - 1) / 2
+
+            head = " ".join(unallocated_role.split(" ")[:math.ceil(middle_space)])
+            json_of_roles = role_to_json(json_of_roles, unallocated_workers, head)
+
+            tail = " ".join(unallocated_role.split(" ")[math.ceil(middle_space):])
+            json_of_roles = role_to_json(json_of_roles, unallocated_workers, tail)
 
 
+        else: # unallocated_role is UNCERTAIN
+            role['workers'] = int(role['workers']) + unallocated_workers
+            role['examples'].append(unallocated_role)
+
+    else: # unallocated_role FOUND in examples!!!
+        for role in json_of_roles:
+            if role['name'] == best_fit_role:
+                role['workers'] = int(role['workers']) + unallocated_workers
+
+    return json_of_roles
+
+
+def get_json_of_roles():
+    rank_of_roles = get_list_from_file("parsed_data/rank_of_roles.csv")
+
+    with open('parsed_data/roles_template.json', 'r') as file:
+        json_of_roles = json.load(file)
+
+    for undefined_role in rank_of_roles:
+        unallocated_workers = int(undefined_role.split(" ", 1)[0])
+        unallocated_role = undefined_role.split(" ", 1)[1]
+
+        json_of_roles = role_to_json(json_of_roles, unallocated_workers, unallocated_role)
+
+    return json_of_roles
+
+
+#populate_csv_files() #when files need be created
+
+json_of_roles = get_json_of_roles()
+
+with open('parsed_data/roles.json', 'w') as file:
+    json.dump(json_of_roles, file, ensure_ascii=False, indent=4)
