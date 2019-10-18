@@ -4,34 +4,70 @@
         "workers": 0,
         "examples": [
             "ADVISOR",
+            "BLOCKCHAIN ADVISOR",
+            "BOARD ADVISOR",
             "CCO",
+            "CHIEF COMPLIANCE OFFICER",
             "COMPLIANCE",
             "CONSULTANT",
-            "LAWYER"
+            "FINANCIAL ADVISOR",
+            "ICO ADVISOR",
+            "INITIAL COIN OFFERING ADVISOR",
+            "LAWYER",
+            "LEGAL",
+            "LEGAL ADVISOR",
+            "STRATEGIC ADVISOR",
+            "STRATEGY",
+            "TECHNICAL ADVISOR"
         ]
     },
     {
         "name": "DEVELOPER",
         "workers": 0,
         "examples": [
+            "BACKEND DEVELOPER",
             "BLOCKCHAIN DEVELOPER",
             "BLOCKCHAIN EXPERT",
+            "BLOCKCHAIN ENGINEER",
+            "CIO",
+            "CHIEF INFORMATION OFFICER",
             "CORE DEVELOPER",
             "DEVELOPER",
+            "DEVELOPMENT",
+            "ENGINEER",
+            "FRONTEND DEVELOPER",
+            "FULL STACK DEVELOPER",
             "IOS DEVELOPER",
+            "LEAD DEVELOPER",
             "PROGRAMMER",
+            "SENIOR DEVELOPER",
+            "SENIOR SOFTWARE ENGINEER",
+            "SOFTWARE DEVELOPER",
+            "SOFTWARE ENGINEER",
+            "SW DEVELOPER",
             "SW ENGINEER",
-            "TECHNOLOGY"
+            "TECHNOLOGY",
+            "WEB DEVELOPER"
         ]
     },
     {
         "name": "MANAGER",
         "workers": 0,
         "examples": [
+            "BUSINESS DEVELOPMENT",
             "CEO",
+            "CFO",
+            "CHAIRMAN",
+            "CHIEF EXECUTIVE OFFICER",
+            "CHIEF FINANCIAL OFFICER",
+            "CHIEF TECHNICAL OFFICER",
+            "CHIEF TECHNOLOGY OFFICER",
+            "COMMUNITY MANAGER",
             "CTO",
+            "DIRECTOR",
             "MANAGER",
-            "PROJECT MANAGER"
+            "PRESIDENT",
+            "PRODUCT MANAGER"
         ]
     },
     {
@@ -41,7 +77,15 @@
             "BUSINESS DEVELOPER MANAGER",
             "CMO",
             "CEO MARKETING",
+            "CHIEF EXECUTIVE OFFICER MARKETING",
+            "CHIEF MARKETING OFFICER",
+            "FINANCE",
+            "HEAD OF MARKETING",
+            "MANAGING DIRECTOR",
             "MARKETING",
+            "MARKETING ADVISOR",
+            "MARKETING DIRECTOR",
+            "MARKETING MANAGER",
             "PR MANAGER",
             "PROJECT MANAGER",
             "SALES"
@@ -52,6 +96,8 @@
         "workers": 0,
         "examples": [
             "BOARD MEMBER",
+            "CO FOUNDER",
+            "FOUNDER",
             "PARTNER"
         ]
     },
@@ -71,14 +117,27 @@
             "BLOCKCHAIN ARCHITECT",
             "BUSINESS ANALIST",
             "CREATIVE DIRECTOR",
-            "DESIGNER"
+            "DESIGNER",
+            "GRAPHIC DEVELOPER",
+            "GRAPHIC DESIGNER",
+            "UI DEVELOPER",
+            "UI DESIGNER",
+            "USER INTERFACE DEVELOPER",
+            "USER INTERFACE DESIGNER",
+            "USER EXPERIENCE DEVELOPER",
+            "USER EXPERIENCE DESIGNER",
+            "UX DEVELOPER",
+            "UX DESIGNER"
         ]
     },
     {
         "name": "ADMINISTRATIVE EMPLOYEE",
         "workers": 0,
         "examples": [
-            "CPO"
+            "CPO",
+            "CHIEF PROCUREMENT OFFICER",
+            "CHIEF SECURITY OFFICER",
+            "CSO"
         ]
     },
     {
@@ -86,6 +145,7 @@
         "workers": 0,
         "examples": [
             "COO",
+            "CHIEF OPERATING OFFICER",
             "OPERATION"
         ]
     },
@@ -97,7 +157,12 @@
             " ",
             "BLOCKCHAIN",
             "ICO",
+            "INITIAL COIN OFFERING",
+            "PR",
+            "PROJECT",
             "UI",
+            "USER INTERFACE",
+            "USER EXPERIENCE",
             "UX"
         ]
     },
@@ -112,6 +177,8 @@
     {
         "name": "UNCERTAIN",
         "workers": 0,
-        "examples": []
+        "examples": [
+
+        ]
     }
 ]
