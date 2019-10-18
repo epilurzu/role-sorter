@@ -144,10 +144,10 @@ def role_to_json(json_of_roles, unallocated_workers, unallocated_role):
     return json_of_roles
 
 
-def get_json_of_roles():
-    rank_of_roles = get_list_from_file("parsed_data/rank_of_roles.csv")
+def get_json_of_roles(path_to_template_file):
+    rank_of_roles = get_list_from_file("data/raw_ico_json_2019-09-19//rank_of_roles.csv")
 
-    with open('templates/roles_template.json', 'r') as file:
+    with open(path_to_template_file, 'r') as file:
         json_of_roles = json.load(file)
 
     for undefined_role in rank_of_roles:
