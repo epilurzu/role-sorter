@@ -1,0 +1,92 @@
+[
+    {
+        "name": "ADVISOR",
+        "workers": 0,
+        "examples": [
+            "ADVISOR",
+            "CCO",
+            "COMPLIANCE",
+            "CONSULTANT",
+            "LAWYER"
+        ]
+    },
+    {
+        "name": "DEVELOPER",
+        "workers": 0,
+        "examples": [
+            "BLOCKCHAIN EXPERT",
+            "CORE DEVELOPER",
+            "DEVELOPER",
+            "IOS DEVELOPER",
+            "PROGRAMMER",
+            "SW ENGINEER",
+            "TECHNOLOGY"
+        ]
+    },
+    {
+        "name": "MANAGER",
+        "workers": 0,
+        "examples": [
+            "CEO",
+            "CTO",
+            "MANAGER"
+        ]
+    },
+    {
+        "name": "MARKETING AND COMMUNICATION",
+        "workers": 0,
+        "examples": [
+            "BUSINESS DEVELOPER MANAGER",
+            "CMO",
+            "MARKETING",
+            "PR MANAGER",
+            "SALES"
+        ]
+    },
+    {
+        "name": "FUNDER",
+        "workers": 0,
+        "examples": [
+            "BOARD MEMBER",
+            "CO FUNDER",
+            "FUNDER",
+            "PARTNER"
+        ]
+    },
+    {
+        "name": "INVESTOR",
+        "workers": 0,
+        "examples": [
+            "INVESTOR"
+        ]
+    },
+    {
+        "name": "ANALIST AND DESIGNER",
+        "workers": 0,
+        "examples": [
+            "BLOCKCHAIN ARCHITECT",
+            "BUSINESS ANALIST",
+            "CREATIVE DIRECTOR"
+        ]
+    },
+    {
+        "name": "ADMINISTRATIVE EMPLOYEE",
+        "workers": 0,
+        "examples": [
+            "CPO"
+        ]
+    },
+    {
+        "name": "SYSTEM ENGINEER",
+        "workers": 0,
+        "examples": [
+            "COO",
+            "OPERATION"
+        ]
+    },
+    {
+        "name": "UNCERTAIN",
+        "workers": 0,
+        "examples": []
+    }
+]
