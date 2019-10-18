@@ -102,15 +102,20 @@ def dict_to_rank(dict):
     return rank
 
 
-def role_to_json(json_of_roles, unallocated_workers, unallocated_role):
+def role_to_json(json_of_roles, unallocated_workers, unallocated_role, is_recursive):
     min_distance = 3
     best_fit_role = ""
 
     for role in json_of_roles:
-        if role['name'] == "UNCERTAIN":
-            break
-
         examples = role['examples']
+
+        if role['name'] == "UNCERTAIN":
+            set_of_examples = set([])
+            for example in examples:
+                set_of_examples.add(example)
+
+            role['examples'] = sorted(set_of_examples)
+            break
 
 
         for example in examples:
@@ -121,14 +126,14 @@ def role_to_json(json_of_roles, unallocated_workers, unallocated_role):
                 best_fit_role = role['name']
 
     if min_distance > 2: # unallocated_role not found in examples...
-        if (' ' in unallocated_role): # ... maybe its substrings can be found...
+        if (' ' in unallocated_role and is_recursive): # ... maybe its substrings can be found...
             middle_space = (len(unallocated_role.split(" ")) - 1) / 2
 
             head = " ".join(unallocated_role.split(" ")[:math.ceil(middle_space)])
-            json_of_roles = role_to_json(json_of_roles, unallocated_workers, head)
+            json_of_roles = role_to_json(json_of_roles, unallocated_workers, head, is_recursive)
 
             tail = " ".join(unallocated_role.split(" ")[math.ceil(middle_space):])
-            json_of_roles = role_to_json(json_of_roles, unallocated_workers, tail)
+            json_of_roles = role_to_json(json_of_roles, unallocated_workers, tail, is_recursive)
 
 
         else: # unallocated_role is UNCERTAIN
@@ -143,7 +148,7 @@ def role_to_json(json_of_roles, unallocated_workers, unallocated_role):
     return json_of_roles
 
 
-def get_json_of_roles(path_to_rank_of_roles, path_to_template_file):
+def get_json_of_roles(path_to_rank_of_roles, path_to_template_file, is_recursive):
     rank_of_roles = get_list_from_file(path_to_rank_of_roles)
 
     with open(path_to_template_file, 'r') as file:
@@ -153,6 +158,6 @@ def get_json_of_roles(path_to_rank_of_roles, path_to_template_file):
         unallocated_workers = int(undefined_role.split(" ", 1)[0])
         unallocated_role = undefined_role.split(" ", 1)[1]
 
-        json_of_roles = role_to_json(json_of_roles, unallocated_workers, unallocated_role)
+        json_of_roles = role_to_json(json_of_roles, unallocated_workers, unallocated_role, is_recursive)
 
     return json_of_roles
