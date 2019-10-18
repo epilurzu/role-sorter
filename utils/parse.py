@@ -53,7 +53,6 @@ def string_to_list(string):
     roles = [re.sub(r"\b[A-Z]\b", "", role) for role in roles] # remove single char
     roles = [role.strip() for role in roles]  # remove useless spaces
     roles = [re.sub("\s+", " ", role) for role in roles]  # multiple spaces as one
-    roles = list(filter(None, roles))  # remove ""
 
     return roles
 
