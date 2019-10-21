@@ -111,7 +111,7 @@ def role_to_json(json_of_roles, unallocated_workers, unallocated_role, is_recurs
 
         if role['name'] == "UNCERTAIN":
             set_of_examples = set([])
-            for example in examples:
+            for example in examples:    #make a sorted set of UNCERTAIN before return
                 set_of_examples.add(example)
 
             role['examples'] = sorted(set_of_examples)
