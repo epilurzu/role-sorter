@@ -1,11 +1,10 @@
-import csv
+import pandas as pd
+import numpy as np
 
 
 def get_list_from_file(path_to_file):
-    list = []
-    with open(path_to_file, 'r') as file:
-        for line in file:
-            list.append(line.rstrip("\n"))
+    df = pd.read_csv(path_to_file)
+    list = df.values.tolist()
 
     return list
 
@@ -15,10 +14,10 @@ def get_set_from_file(path_to_file):
 
 
 def get_dict_from_file(path_to_file):
-    dict_of_roles = {}
-    with open(path_to_file, 'r') as file:
-        reader = csv.reader(file)
-        for line in reader:
-            dict_of_roles.update({line[1]: line[0]})
+    df = pd.read_csv(path_to_file, index_col=0, squeeze=True)
+    dict = df.to_dict()
 
-    return dict_of_roles
+    dict[" "] = dict[np.nan]
+    del dict[np.nan]
+
+    return dict

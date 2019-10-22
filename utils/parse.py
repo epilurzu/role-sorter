@@ -4,6 +4,8 @@ import re
 import json
 from Levenshtein import distance
 
+############################ utils ############################
+
 
 def delete_unicode(string):
     string = string.replace(u'\u200c', '')
@@ -24,7 +26,7 @@ def cyrillic_to_english(string):
     return string
 
 
-def split_strings_in_list(list, split_char):
+def split_strings_by_char(list, split_char):
     new_list = []
 
     for string in list:
@@ -33,21 +35,27 @@ def split_strings_in_list(list, split_char):
     return new_list
 
 
-# string_to_list splits different roles from string to list
-# ""1# Advisor & 2# ceo"" ---> ["ADVISOR", "CEO"]
-def string_to_list(string):
-    roles = []
+def normalize(string):
 
     string = delete_unicode(string)  # remove weird unicodes
     string = string.upper()  # all uppercase
     string = cyrillic_to_english(string)  # convert cyrillic
 
+    return string
+
+# string_to_list splits different roles from string to list
+# ""1# Advisor & 2# ceo"" ---> ["ADVISOR", "CEO"]
+def string_to_list(string):
+    roles = []
+
+    string = normalize(string)
+
     roles.append(string)  # from now on, various splits
-    roles = split_strings_in_list(roles, ",")
-    roles = split_strings_in_list(roles, " AND ")
-    roles = split_strings_in_list(roles, "&")
-    roles = split_strings_in_list(roles, "/")
-    roles = split_strings_in_list(roles, "\\")
+    roles = split_strings_by_char(roles, ",")
+    roles = split_strings_by_char(roles, " AND ")
+    roles = split_strings_by_char(roles, "&")
+    roles = split_strings_by_char(roles, "/")
+    roles = split_strings_by_char(roles, "\\")
 
     roles = [re.sub("[^ A-Z]+", "", role) for role in roles]  # remove all special chars and numbers
     roles = [re.sub(r"\b[A-Z]\b", "", role) for role in roles] # remove single char
@@ -56,6 +64,11 @@ def string_to_list(string):
 
     return roles
 
+
+############################ end utils ############################
+
+
+############################ roles ############################
 
 def get_list_of_roles(icos):
     list_of_roles = []
@@ -148,8 +161,41 @@ def role_to_json(json_of_roles, unallocated_workers, unallocated_role, is_recurs
     return json_of_roles
 
 
-def get_json_of_roles(path_to_rank_of_roles, path_to_template_file, is_recursive):
-    rank_of_roles = get_list_from_file(path_to_rank_of_roles)
+def get_json_of_roles(path_to_dict_of_roles, path_to_template_file, is_recursive):
+    dict_of_roles = get_dict_from_file(path_to_dict_of_roles)
+
+    with open(path_to_template_file, 'r') as file:
+        json_of_roles = json.load(file)
+
+    for unallocated_role, unallocated_workers in dict_of_roles.items():
+
+        json_of_roles = role_to_json(json_of_roles, unallocated_workers, unallocated_role, is_recursive)
+
+    return json_of_roles
+
+############################ end roles ############################
+
+
+############################ people ############################
+"""
+def get_dict_of_people(icos):
+    dict_of_people = {}
+
+    for ico in icos:
+        team = ico['team']
+
+        for person in team:
+            name = json.dumps(person['name'], ensure_ascii=False)  # convert unicodes
+            name = normalize(name)
+
+            socials = json.dumps(person['socials'], ensure_ascii=False)  # convert unicodes
+
+            dict_of_people[socials] = name
+
+    return dict_of_people
+
+def get_json_of_people(icos):
+    dict_of_people{} = get_dict_of_people(icos)
 
     with open(path_to_template_file, 'r') as file:
         json_of_roles = json.load(file)
@@ -161,3 +207,5 @@ def get_json_of_roles(path_to_rank_of_roles, path_to_template_file, is_recursive
         json_of_roles = role_to_json(json_of_roles, unallocated_workers, unallocated_role, is_recursive)
 
     return json_of_roles
+"""
+############################ end people ############################
