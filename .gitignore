@@ -77,3 +77,6 @@ fabric.properties
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
+
+# VENV (Virtual Environments)
+venv/*
