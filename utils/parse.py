@@ -70,6 +70,7 @@ def string_to_list(string):
 
 ############################ roles ############################
 
+
 def get_list_of_roles(icos):
     list_of_roles = []
 
@@ -173,39 +174,60 @@ def get_json_of_roles(path_to_dict_of_roles, path_to_template_file, is_recursive
 
     return json_of_roles
 
+
 ############################ end roles ############################
 
 
 ############################ people ############################
-"""
+
+
 def get_dict_of_people(icos):
     dict_of_people = {}
 
     for ico in icos:
-        team = ico['team']
+        ico_name = ico['name']
+        ico_url = ico['url']
+        ico_token = ico['token']
 
-        for person in team:
-            name = json.dumps(person['name'], ensure_ascii=False)  # convert unicodes
-            name = normalize(name)
+        ico_team = ico['team']
 
-            socials = json.dumps(person['socials'], ensure_ascii=False)  # convert unicodes
+        for person in ico_team:
+            person_name = json.dumps(person['name'], ensure_ascii=False)  # convert unicodes
+            person_name = normalize(person_name)
+            person_name = re.sub("[^ A-Z]+", "", person_name)  # remove all special chars and numbers
 
-            dict_of_people[socials] = name
+            person_socials = json.dumps(person['socials'], ensure_ascii=False)  # convert unicodes
+
+            person_role = json.dumps(person['role'], ensure_ascii=False)  # convert unicodes
+
+            if (person_name, person_socials) not in dict_of_people.keys():
+                dict_of_people[person_name, person_socials] = []
+
+            ico = {'name' : ico_name,
+                   'url' : ico_url,
+                   'token' : ico_token,
+                   'role' : person_role}
+
+            if ico not in dict_of_people[person_name, person_socials]:
+                dict_of_people[person_name, person_socials].append(ico)
 
     return dict_of_people
 
 def get_json_of_people(icos):
-    dict_of_people{} = get_dict_of_people(icos)
+    dict_of_people = get_dict_of_people(icos)
 
-    with open(path_to_template_file, 'r') as file:
-        json_of_roles = json.load(file)
+    json_of_people = []
 
-    for undefined_role in rank_of_roles:
-        unallocated_workers = int(undefined_role.split(" ", 1)[0])
-        unallocated_role = undefined_role.split(" ", 1)[1]
+    for person, icos in dict_of_people.items():
+        dict_of_person = {}
 
-        json_of_roles = role_to_json(json_of_roles, unallocated_workers, unallocated_role, is_recursive)
+        dict_of_person['name'] = person[0]
+        dict_of_person['socials'] = person[1]
+        dict_of_person['icos'] = icos
 
-    return json_of_roles
-"""
+        json_of_people.append(dict_of_person)
+
+    return json_of_people
+
+
 ############################ end people ############################

@@ -12,7 +12,7 @@ with open('data/raw_ico_json_2019-09-19/ICOBench_upcoming_2019-09-19.json', 'r')
 
 #populate_csv_files(icos, 'data/parsed/') #when files need be created
 
-
+"""
 path_to_dict_of_roles = "data/parsed/dict_of_roles.csv"
 path_to_template_file = "data/templates/roles_template.json"
 is_recursive = False # if True checks also substrings in the examples
@@ -26,5 +26,9 @@ else:
 
 with open(path_to_json, 'w') as file:
     json.dump(json_of_roles, file, ensure_ascii=False, indent=4)
+"""
 
+json_of_people = get_json_of_people(icos)
 
+with open("data/parsed/people.json", 'w') as file:
+    json.dump(json_of_people, file, ensure_ascii=False, indent=4)
