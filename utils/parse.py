@@ -181,6 +181,49 @@ def get_json_of_roles(path_to_dict_of_roles, path_to_template_file, is_recursive
 ############################ people ############################
 
 
+def socials_to_dict(socials):
+    dict_of_socials = {"linkedin" : "",
+                       "twitter" : "",
+                       "facebook": "",
+                       "instagram": "",
+                       "github" : "",
+                       "wikipedia" : ""
+                            #,"other" : [] #Todo: check
+                       }
+
+    for social in socials:
+        for key in dict_of_socials:
+            if key in social and "company" not in social:
+                if key == "linkedin":
+                    if re.match("(in\/|pub\/|id=)(.*)", social):
+                        username = re.search("(in\/|pub\/|id=)(.*)", social).group(2).split("/")[0]
+                        social = "https://www.linkedin.com/in/" + username + "/"
+                    else:
+                        break
+
+                dict_of_socials[key] = social
+
+                break
+
+    return dict_of_socials
+
+
+def update_if_person_fits(person_name, person_socials, dict_of_people):
+    for person, value in dict_of_people.items():
+        if value[0] == person_name:
+            for social, url in value[1].items():
+                if url == person_socials[social]:
+
+                    dict_of_people[person][1] = {**dict_of_people[person][1], **person_socials} # same person, merge dict_of_socials
+                    new_key = hash((person_name, json.dumps(person_socials)))
+                    dict_of_people[new_key] = dict_of_people[person]
+                    del dict_of_people[person]
+
+                    return dict_of_people
+
+    return dict_of_people
+
+
 def get_dict_of_people(icos):
     dict_of_people = {}
 
@@ -196,20 +239,23 @@ def get_dict_of_people(icos):
             person_name = normalize(person_name)
             person_name = re.sub("[^ A-Z]+", "", person_name)  # remove all special chars and numbers
 
-            person_socials = json.dumps(person['socials'], ensure_ascii=False)  # convert unicodes
+            person_socials = socials_to_dict(person['socials'])
+
+            key = hash((person_name, json.dumps(person_socials)))
 
             person_role = json.dumps(person['role'], ensure_ascii=False)  # convert unicodes
 
-            if (person_name, person_socials) not in dict_of_people.keys():
-                dict_of_people[person_name, person_socials] = []
+            dict_of_people = update_if_person_fits(person_name, person_socials, dict_of_people) # check if person exist in dict_of_people and if that's the case update it
 
-            ico = {'name' : ico_name,
-                   'url' : ico_url,
-                   'token' : ico_token,
-                   'role' : person_role}
+            ico = {'name': ico_name,
+                   'url': ico_url,
+                   'token': ico_token,
+                   'role': person_role} #Todo: specify as parsed
 
-            if ico not in dict_of_people[person_name, person_socials]:
-                dict_of_people[person_name, person_socials].append(ico)
+            if key not in dict_of_people:
+                dict_of_people[key] = [person_name, person_socials, [ico]]
+            elif ico not in dict_of_people[key][2]:
+                dict_of_people[key][2].append(ico)
 
     return dict_of_people
 
@@ -218,12 +264,12 @@ def get_json_of_people(icos):
 
     json_of_people = []
 
-    for person, icos in dict_of_people.items():
+    for hash_of_person, value in dict_of_people.items():
         dict_of_person = {}
 
-        dict_of_person['name'] = person[0]
-        dict_of_person['socials'] = person[1]
-        dict_of_person['icos'] = icos
+        dict_of_person['name'] = value[0]
+        dict_of_person['socials'] = {k: v for k, v in value[1].items() if v is not ""}
+        dict_of_person['icos'] = value[2]
 
         json_of_people.append(dict_of_person)
 
