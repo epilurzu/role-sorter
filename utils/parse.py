@@ -182,28 +182,43 @@ def get_json_of_roles(path_to_dict_of_roles, path_to_template_file, is_recursive
 
 
 def socials_to_dict(socials):
-    dict_of_socials = {"linkedin" : "",
+    dict_of_socials = {"mail" : "",
+                       "linkedin": "",
                        "twitter" : "",
                        "facebook": "",
                        "instagram": "",
+                       "telegram": "",
                        "github" : "",
+                       "vk": "",
                        "wikipedia" : ""
-                            #,"other" : [] #Todo: check
                        }
+
+    others = []
 
     for social in socials:
         for key in dict_of_socials:
-            if key in social and "company" not in social:
-                if key == "linkedin":
-                    if re.match("(in\/|pub\/|id=)(.*)", social):
+            if re.search(r'[\w\.-]+@[\w\.-]+', social): # if there is a mail...
+                dict_of_socials['mail'] = re.search('[\w\.-]+@[\w\.-]+', social).group(0)   # error in original editor. string https://ceditor.cedoor.org/
+                social = ""
+                break
+
+            elif key in social and key is not "mail":
+                if key == "linkedin" and "company" not in social:   # company social not accepted
+                    if re.search("(in\/|pub\/|id=)(.*)", social):
                         username = re.search("(in\/|pub\/|id=)(.*)", social).group(2).split("/")[0]
                         social = "https://www.linkedin.com/in/" + username + "/"
                     else:
                         break
 
                 dict_of_socials[key] = social
-
+                social = ""
                 break
+
+        if not social == "":
+            others.append(social)
+
+    if others:
+        dict_of_socials['others'] = others
 
     return dict_of_socials
 
@@ -243,14 +258,14 @@ def get_dict_of_people(icos):
 
             key = hash((person_name, json.dumps(person_socials)))
 
-            person_role = json.dumps(person['role'], ensure_ascii=False)  # convert unicodes
+            person_role = json.dumps(person['role'], ensure_ascii=False)  # convert unicodes #Todo: specify as parsed here
 
             dict_of_people = update_if_person_fits(person_name, person_socials, dict_of_people) # check if person exist in dict_of_people and if that's the case update it
 
             ico = {'name': ico_name,
                    'url': ico_url,
                    'token': ico_token,
-                   'role': person_role} #Todo: specify as parsed
+                   'role': person_role}
 
             if key not in dict_of_people:
                 dict_of_people[key] = [person_name, person_socials, [ico]]
