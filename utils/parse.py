@@ -202,6 +202,11 @@ def socials_to_dict(socials):
                 social = ""
                 break
 
+            if "t.me" in social:  # if there is a telegram link...
+                dict_of_socials['telegram'] = social
+                social = ""
+                break
+
             elif key in social and key is not "mail":
                 if key == "linkedin" and "company" not in social:   # company social not accepted
                     if re.search("(in\/|pub\/|id=)(.*)", social):
