@@ -26,17 +26,17 @@
         "workers": 0,
         "examples": [
             "BACKEND DEVELOPER",
+            "BC",
             "BLOCKCHAIN DEVELOPER",
             "BLOCKCHAIN EXPERT",
             "BLOCKCHAIN ENGINEER",
-            "CIO",
-            "CHIEF INFORMATION OFFICER",
             "CORE DEVELOPER",
             "DEVELOPER",
             "DEVELOPMENT",
             "ENGINEER",
             "FRONTEND DEVELOPER",
             "FULL STACK DEVELOPER",
+            "GRAPHIC  DEVELOPER",
             "IOS DEVELOPER",
             "LEAD DEVELOPER",
             "PROGRAMMER",
@@ -47,6 +47,9 @@
             "SW DEVELOPER",
             "SW ENGINEER",
             "TECHNOLOGY",
+            "UI DEVELOPER",
+            "USER EXPERIENCE  DEVELOPER",
+            "UX  DEVELOPER",
             "WEB DEVELOPER"
         ]
     },
@@ -57,16 +60,16 @@
             "BUSINESS DEVELOPMENT",
             "CEO",
             "CFO",
-            "CHAIRMAN",
             "CHIEF EXECUTIVE OFFICER",
             "CHIEF FINANCIAL OFFICER",
             "CHIEF TECHNICAL OFFICER",
             "CHIEF TECHNOLOGY OFFICER",
+            "CHIEF INFORMATION OFFICER",
+            "CIO",
             "COMMUNITY MANAGER",
             "CTO",
             "DIRECTOR",
             "MANAGER",
-            "PRESIDENT",
             "PRODUCT MANAGER"
         ]
     },
@@ -81,11 +84,13 @@
             "CHIEF MARKETING OFFICER",
             "FINANCE",
             "HEAD OF MARKETING",
+            "INFLUENCER",
             "MANAGING DIRECTOR",
             "MARKETING",
             "MARKETING ADVISOR",
             "MARKETING DIRECTOR",
             "MARKETING MANAGER",
+            "PR",
             "PR MANAGER",
             "PROJECT MANAGER",
             "SALES"
@@ -96,9 +101,11 @@
         "workers": 0,
         "examples": [
             "BOARD MEMBER",
+            "CHAIRMAN",
             "CO FOUNDER",
             "FOUNDER",
-            "PARTNER"
+            "PARTNER",
+            "PRESIDENT"
         ]
     },
     {
@@ -111,22 +118,21 @@
         ]
     },
     {
-        "name": "ANALIST AND DESIGNER",
+        "name": "PM, ANALIST AND DESIGNER",
         "workers": 0,
         "examples": [
             "BLOCKCHAIN ARCHITECT",
             "BUSINESS ANALIST",
             "CREATIVE DIRECTOR",
             "DESIGNER",
-            "GRAPHIC DEVELOPER",
             "GRAPHIC DESIGNER",
-            "UI DEVELOPER",
+            "PROJECT",
+            "UI",
             "UI DESIGNER",
             "USER INTERFACE DEVELOPER",
             "USER INTERFACE DESIGNER",
-            "USER EXPERIENCE DEVELOPER",
             "USER EXPERIENCE DESIGNER",
-            "UX DEVELOPER",
+            "UX",
             "UX DESIGNER"
         ]
     },
@@ -158,19 +164,14 @@
             "BLOCKCHAIN",
             "ICO",
             "INITIAL COIN OFFERING",
-            "PR",
-            "PROJECT",
-            "UI",
             "USER INTERFACE",
             "USER EXPERIENCE",
-            "UX"
         ]
     },
     {
         "name": "NOT PERTINENT",
         "workers": 0,
         "examples": [
-            "INFLUENCER",
             "ZUMBA INSTRUCTOR"
         ]
     },
