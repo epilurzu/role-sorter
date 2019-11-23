@@ -1,4 +1,5 @@
 from constant import *
+from utils import string_to_list
 
 import math
 from Levenshtein import distance
@@ -42,8 +43,10 @@ class Role:
             else:
                 return set(["UNCERTAIN"])
 
+        roles = set([])
 
-        roles = get_roles(unclear_role)
+        for role in string_to_list(unclear_role):
+            roles = roles | get_roles(role)
 
         if len(roles) > 1 and "UNCERTAIN" in roles:
             roles.discard("UNCERTAIN")

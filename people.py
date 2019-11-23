@@ -2,10 +2,13 @@ from person import Person
 
 class People:
 
-    def __init__(self, icos):
-        self.people = self._get_people_from_icos(icos)
-        
-    def _get_people_from_icos(self, icos):
+    people = []
+
+    count_people = 0
+    count_roles = 0
+
+    @staticmethod
+    def get_people_from_icos(icos):
         people = []
 
         for ico in icos:
@@ -21,8 +24,31 @@ class People:
 
                 people.append(Person(person_name, person_socials, ico_name, ico_token, ico_url, person_role))
 
-        return people
+        People.people = people
 
-    def print(self):
-        for person in self.people:
-            person.print_info()
+        People.count_people = len(People.people)
+        People.count_roles = People._get_count_roles()
+
+    @staticmethod
+    def _get_count_roles():
+        count_roles = 0
+
+        for person in People.people:
+            count_roles += person.get_count_roles()
+
+        return count_roles
+
+    #self.count_people =
+    #self.count_ico =
+
+    #self.rank_of_role = dict
+    #self.rank_of_position = dict
+
+    #@staticmethod
+    #def print_all():
+    #    for person in People.people:
+    #        print("-------------------------")
+    #        print(person.name)
+    #
+    #        for p in person.position:
+    #            print(p.) 

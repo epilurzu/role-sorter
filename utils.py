@@ -28,14 +28,15 @@ def normalize(string):
     return string
 
 
-def split_strings_by_separators(list, separators):
+def split_strings_by_separators(string_list, separators):
     new_list = []
 
-    for string in list:
-        new_list = new_list + string.split(separators[1])
+    for string in string_list:
+        new_list = new_list + string.split(separators[0])
 
     if len(separators) > 1:
-        split_strings_by_separators(new_list, separators[1:])
+        new_list = new_list + split_strings_by_separators(new_list, separators[1:])
+
     return new_list
 
 
@@ -45,14 +46,13 @@ def string_to_list(string):
 
     string = normalize(string)
 
-    roles = []
-    roles.append(string)
+    string_list = [string]
     separators = [",", " AND ", "&", "/", "\\"]
 
-    roles = split_strings_by_separators(roles, separators)# various splits
-    roles = [re.sub("[^ A-Z]+", "", role) for role in roles]  # remove all special chars and numbers
-    roles = [re.sub(r"\b[A-Z]\b", "", role) for role in roles] # remove single char
-    roles = [role.strip() for role in roles]  # remove useless spaces
-    roles = [re.sub("\s+", " ", role) for role in roles]  # multiple spaces as one
+    string_list = split_strings_by_separators(string_list, separators)# various splits
+    string_list = [re.sub("[^ A-Z]+", "", string_list) for string_list in string_list]  # remove all special chars and numbers
+    string_list = [re.sub(r"\b[A-Z]\b", "", string_list) for string_list in string_list] # remove single char
+    string_list = [string_list.strip() for string_list in string_list]  # remove useless spaces
+    string_list = [re.sub("\s+", " ", string_list) for string_list in string_list]  # multiple spaces as one
 
-    return roles
+    return string_list

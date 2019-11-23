@@ -13,15 +13,5 @@ class Person:
         for role in roles:
             self.positions.append(Position(ico_name, ico_token, ico_url, role))
 
-    def print_info(self):
-        print("--------------------------------------------")
-        print(self.name)
-        
-
-        print("\nSOCIALS")
-        for social in self.socials:
-            print(social)
-
-        print("\nPOSITIONS")
-        for position in self.positions:
-            position.print_all()
+    def get_count_roles(self):
+        return len(self.positions)
