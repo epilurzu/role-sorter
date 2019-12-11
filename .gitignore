@@ -78,5 +78,11 @@ fabric.properties
 __pycache__/
 *.py[cod]
 
-# VENV (Virtual Environments)
-venv/*
+# Environments
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
