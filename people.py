@@ -35,10 +35,10 @@ class People:
         People.people = people
 
         People.count_people = len(People.people)
-        People.count_roles = People._get_count_roles()
+        People.count_roles = People.__get_count_roles()
 
     @staticmethod
-    def _get_count_roles():
+    def __get_count_roles():
         count_roles = 0
 
         for person in People.people:

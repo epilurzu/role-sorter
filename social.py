@@ -5,7 +5,7 @@ from urllib.parse import unquote
 class Social:
 
     @staticmethod
-    def base_normalize(social,template):
+    def __base_normalize(social,template):
         if not social.endswith("/"):
             social = social+"/"
 
@@ -25,7 +25,7 @@ class Social:
         return None
 
     @staticmethod
-    def normalize_linkedin(social):
+    def __normalize_linkedin(social):
         prefix = ""
         username = ""
         linkedin_regex = r".*?tps?.*linkedin.*?/(?P<prefix>in|company|pub|profile|showcase)/(?P<username>[^/]*)/?"
@@ -47,36 +47,36 @@ class Social:
         return None
 
     @staticmethod
-    def normalize_twitter(social):
-        return Social.base_normalize(social,"https://twitter.com/{0}")
+    def __normalize_twitter(social):
+        return Social.__base_normalize(social,"https://twitter.com/{0}")
 
     @staticmethod
-    def normalize_facebook(social):
-        return Social.base_normalize(social,"https://www.facebook.com/{0}")
+    def __normalize_facebook(social):
+        return Social.__base_normalize(social,"https://www.facebook.com/{0}")
 
     @staticmethod
-    def normalize_instagram(social):
-        return Social.base_normalize(social,"https://instagram.com/{0}")
+    def __normalize_instagram(social):
+        return Social.__base_normalize(social,"https://instagram.com/{0}")
 
     @staticmethod
-    def normalize_telegram(social):
-        return Social.base_normalize(social, "https://t.me/{0}")
+    def __normalize_telegram(social):
+        return Social.__base_normalize(social, "https://t.me/{0}")
 
     @staticmethod
-    def normalize_github(social):
-        return Social.base_normalize(social, "https://github.com/{0}")
+    def __normalize_github(social):
+        return Social.__base_normalize(social, "https://github.com/{0}")
 
     @staticmethod
-    def normalize_vk(social):
-        return Social.base_normalize(social, "https://vk.com/{0}")
+    def __normalize_vk(social):
+        return Social.__base_normalize(social, "https://vk.com/{0}")
 
-    blacklist = [
+    __blacklist = [
         "https://www.linkedin.com/",
         "https://www.linkedin.com/in/"
     ]
 
     @staticmethod
-    def normalize_url(url):
+    def __normalize_url(url):
         url = url.strip()
         url = url.lower()
         url = url.replace(" ","")
@@ -89,10 +89,10 @@ class Social:
         normalized_socials = set()
         
         for social in socials:
-            if social in Social.blacklist:
+            if social in Social.__blacklist:
                 continue
 
-            social = Social.normalize_url(social)
+            social = Social.__normalize_url(social)
 
             rec_regex = r".*?tps?.*(twitter|facebook|instagram|linkedin|t\.me|github|vk).*?/.*"
             match = re.search(rec_regex,social)
@@ -100,31 +100,31 @@ class Social:
             if match is not None:
                 website = match.group(1)
                 if "twitter" in website:
-                    normalized_socials.add(Social.normalize_twitter(social))
+                    normalized_socials.add(Social.__normalize_twitter(social))
                     continue
 
                 if "facebook" in website:
-                    normalized_socials.add(Social.normalize_facebook(social))
+                    normalized_socials.add(Social.__normalize_facebook(social))
                     continue
                 
                 if "instagram" in website:
-                    normalized_socials.add(Social.normalize_instagram(social))
+                    normalized_socials.add(Social.__normalize_instagram(social))
                     continue
                 
                 if "linkedin" in website:
-                    normalized_socials.add(Social.normalize_linkedin(social))
+                    normalized_socials.add(Social.__normalize_linkedin(social))
                     continue
                 
                 if "t.me" in website:
-                    normalized_socials.add(Social.normalize_telegram(social))
+                    normalized_socials.add(Social.__normalize_telegram(social))
                     continue
                 
                 if "github" in website:
-                    normalized_socials.add(Social.normalize_github(social))
+                    normalized_socials.add(Social.__normalize_github(social))
                     continue
                 
                 if "vk" in website:
-                    normalized_socials.add(Social.normalize_vk(social))
+                    normalized_socials.add(Social.__normalize_vk(social))
                     continue
                 
             else:
