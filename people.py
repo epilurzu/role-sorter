@@ -22,7 +22,15 @@ class People:
                 person_socials = employee["socials"]
                 person_role = employee["role"]
 
-                people.append(Person(person_name, person_socials, ico_name, ico_token, ico_url, person_role))
+                duplicate = Person.find_duplicate(people, person_name, person_socials)
+                
+                if duplicate is not None:
+                    people[duplicate].update(person_socials, ico_name, ico_token, ico_url, person_role)
+                else:
+                    people.append(Person(person_name, person_socials, ico_name, ico_token, ico_url, person_role))
+
+            if (icos.index(ico) % 100) == 0:
+                print("{} ICOs analyzed out of {}".format(str(icos.index(ico)), str(len(icos))))
 
         People.people = people
 
