@@ -1,5 +1,5 @@
 from person import Person
-from utils import mergeDict
+from utils import merge_dict
 
 class People:
 
@@ -60,7 +60,7 @@ class People:
         count_roles_by_role = dict()
 
         for person in People.people:
-            count_roles_by_role = mergeDict(count_roles_by_role, person.get_count_roles_by_role())
+            count_roles_by_role = merge_dict(count_roles_by_role, person.get_count_roles_by_role())
         
         return count_roles_by_role
 

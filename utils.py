@@ -1,7 +1,7 @@
 import re
 
 #Merge dictionaries and sum values of common keys in list
-def mergeDict(dict1, dict2):
+def merge_dict(dict1, dict2):
    dict3 = {**dict1, **dict2}
    for key, value in dict3.items():
        if key in dict1 and key in dict2:

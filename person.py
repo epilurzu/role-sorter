@@ -2,7 +2,7 @@ from constant import *
 from positions import Positions
 from social import Social
 from role import Role
-from utils import mergeDict
+from utils import merge_dict
 
 from Levenshtein import distance
 
