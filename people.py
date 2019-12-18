@@ -1,6 +1,8 @@
 from person import Person
 from utils import merge_dict
 
+import json
+
 class People:
 
     people = []
@@ -11,7 +13,7 @@ class People:
     count_people_by_role_count = dict()
 
     @staticmethod
-    def get_people_from_icos(icos):
+    def get_people_from_raw_data(icos):
         people = []
 
         print("Analyzing ICOs...")
@@ -77,21 +79,14 @@ class People:
         
         return count_people_by_role_count
 
+    def to_parsed_json(file_name):
+        data = dict()
+        data["people"] = []
 
+        for person in People.people:
+            data["people"].append(person.get_data())
 
+        with open('data/parsed/' + file_name, 'w') as outfile:
+            json.dump(data, outfile, indent=4)
 
-
-
-
-
-    #self.rank_of_role = dict
-    #self.count_people_by_role_count = dict
-
-    #@staticmethod
-    #def print_all():
-    #    for person in People.people:
-    #        print("-------------------------")
-    #        print(person.name)
-    #
-    #        for p in person.position:
-    #            print(p.) 
+        print("Data saved in {}\n".format('data/parsed' + file_name))

@@ -27,3 +27,24 @@ class Positions:
             count_people_by_role_name[role] += 1
         
         return count_people_by_role_name
+
+    def get_data(self):
+        data_list = []
+
+        for position in self.positions:
+            data = dict()
+
+            ico = position[0]
+            role = position[1]
+
+            data["ico"] = ico.name
+            data["token"] = ico.token
+            data["url"] = ico.url
+            data["role"] = role.name
+
+            data_list.append(data)
+
+        return data_list
+
+            
+

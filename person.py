@@ -44,3 +44,14 @@ class Person:
 
     def get_count_people_by_role_name(self):
         return self.positions.get_count_people_by_role_name()
+
+
+    def get_data(self):
+        data = dict()
+
+        data["name"] = self.name
+        data["socials"] = list(self.socials.get_socials())
+        data["positions"] = self.positions.get_data()
+
+        return data
+

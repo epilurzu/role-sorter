@@ -2,17 +2,15 @@ import json
 from people import People
 from utils import print_dict
 
-"""with open('data/raw_ico_json_2019-09-19/ICOBench_ended_2019-09-19.json', 'r') as file:
+file_name = "ICOBench_ended_2019-09-19.json"
+#file_name = "ICOBench_ongoing_2019-09-19.json"
+#file_name = "ICOBench_upcoming_2019-09-19.json"
+
+with open('data/raw/' + file_name, 'r') as file:
     icos = json.load(file)
 
-with open('data/raw_ico_json_2019-09-19/ICOBench_ongoing_2019-09-19.json', 'r') as file:
-    icos = icos + json.load(file)"""
-
-with open('data/raw_ico_json_2019-09-19/ICOBench_upcoming_2019-09-19.json', 'r') as file:
-    #icos = icos + json.load(file)
-    icos = json.load(file)
-
-People.get_people_from_icos(icos)
+People.get_people_from_raw_data(icos)
+People.to_parsed_json(file_name)
 
 print("Count ICOs:\t{}".format(str(len(icos))))
 print("Count People:\t{}".format(People.count_people))
