@@ -4,6 +4,15 @@ from urllib.parse import unquote
 
 class Social:
 
+    def __init__(self, socials):
+        self.socials = Social.normalize(socials)
+
+    def get_socials(self):
+        return self.socials
+
+    def update(self, socials):
+        self.socials = self.socials|Social.normalize(socials)
+
     @staticmethod
     def __base_normalize(social,template):
         if not social.endswith("/"):
