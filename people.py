@@ -7,8 +7,8 @@ class People:
 
     count_people = 0
     count_roles = 0
-    count_roles_by_role = dict()
-    #count_positions_by_people = dict()
+    count_people_by_role_name = dict()
+    count_people_by_role_count = dict()
 
     @staticmethod
     def get_people_from_icos(icos):
@@ -43,8 +43,8 @@ class People:
 
         People.count_people = len(People.people)
         People.count_roles = People.__get_count_roles()
-        People.count_roles_by_role = People.__get_count_roles_by_role()
-        #People.count_positions_by_people = People.__get_count_positions_by_people()
+        People.count_people_by_role_name = People.__get_count_people_by_role_name()
+        People.count_people_by_role_count = People.__get_count_people_by_role_count()
 
     @staticmethod
     def __get_count_roles():
@@ -56,16 +56,26 @@ class People:
         return count_roles
 
     
-    def __get_count_roles_by_role():
-        count_roles_by_role = dict()
+    def __get_count_people_by_role_name():
+        count_people_by_role_name = dict()
 
         for person in People.people:
-            count_roles_by_role = merge_dict(count_roles_by_role, person.get_count_roles_by_role())
+            count_people_by_role_name = merge_dict(count_people_by_role_name, person.get_count_people_by_role_name())
         
-        return count_roles_by_role
+        return count_people_by_role_name
 
-    #def __get_count_positions_by_people():
+    def __get_count_people_by_role_count():
+        count_people_by_role_count = dict()
 
+        for person in People.people:
+            count_roles = person.get_count_roles()
+
+            if count_roles not in count_people_by_role_count:
+                count_people_by_role_count[count_roles] = 0
+            
+            count_people_by_role_count[count_roles] += 1
+        
+        return count_people_by_role_count
 
 
 
@@ -75,7 +85,7 @@ class People:
 
 
     #self.rank_of_role = dict
-    #self.count_positions_by_people = dict
+    #self.count_people_by_role_count = dict
 
     #@staticmethod
     #def print_all():

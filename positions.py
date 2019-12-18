@@ -15,15 +15,15 @@ class Positions:
     def count(self):
         return len(self.positions)
 
-    def get_count_roles_by_role(self):
-        count_roles_by_role = dict()
+    def get_count_people_by_role_name(self):
+        count_people_by_role_name = dict()
 
         for position in self.positions:
             role = position[1].name
 
-            if role not in count_roles_by_role:
-                count_roles_by_role[role] = 0
+            if role not in count_people_by_role_name:
+                count_people_by_role_name[role] = 0
             
-            count_roles_by_role[role] += 1
+            count_people_by_role_name[role] += 1
         
-        return count_roles_by_role
+        return count_people_by_role_name
