@@ -9,6 +9,9 @@ def merge_dict(dict1, dict2):
  
    return dict3
 
+def print_dict(d):
+    for key, value in d.items():
+        print("\t{}\t{}".format(value, key))
 
 def delete_unicode(string):
     string = string.replace(u'\u200c', '')
