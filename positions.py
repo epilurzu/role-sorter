@@ -12,6 +12,9 @@ class Positions:
 
         self.positions.append((ico, role))
 
+    def is_empty(self):
+        return len(self.positions) == 0
+
     def count(self):
         return len(self.positions)
 

@@ -6,6 +6,7 @@ import json
 class People:
 
     people = []
+    people_with_uncertain_roles = []
 
     count_people = 0
     count_roles = 0
@@ -42,11 +43,24 @@ class People:
         print("Done.\n")
 
         People.people = people
+        People.people_with_uncertain_roles = People.__get_people_with_uncertain_roles()
 
         People.count_people = len(People.people)
         People.count_roles = People.__get_count_roles()
         People.count_people_by_role_name = People.__get_count_people_by_role_name()
-        People.count_people_by_role_count = People.__get_count_people_by_role_count()
+        People.count_people_by_role_count = People.__get_count_people_by_role_count()   
+
+
+    @staticmethod
+    def __get_people_with_uncertain_roles():
+        people_with_uncertain_roles = []
+
+        for person in People.people:
+            if person.has_uncertain_roles():
+                people_with_uncertain_roles.append(person)
+        
+        return people_with_uncertain_roles
+
 
     @staticmethod
     def __get_count_roles():
@@ -57,7 +71,8 @@ class People:
 
         return count_roles
 
-    
+
+    @staticmethod
     def __get_count_people_by_role_name():
         count_people_by_role_name = dict()
 
@@ -66,6 +81,8 @@ class People:
         
         return count_people_by_role_name
 
+
+    @staticmethod
     def __get_count_people_by_role_count():
         count_people_by_role_count = dict()
 
@@ -79,6 +96,8 @@ class People:
         
         return count_people_by_role_count
 
+
+    @staticmethod
     def to_parsed_json(file_name):
         data = dict()
         data["people"] = []
@@ -89,4 +108,18 @@ class People:
         with open('data/parsed/' + file_name, 'w') as outfile:
             json.dump(data, outfile, indent=4)
 
-        print("Data saved in {}\n".format('data/parsed' + file_name))
+        print("Data saved in {}\n".format('data/parsed/' + file_name))
+
+    
+    @staticmethod
+    def uncertain_roles_to_parsed_json(file_name):
+        data = dict()
+        data["people"] = []
+
+        for person in People.people_with_uncertain_roles:
+            data["people"].append(person.get_data_uncertain_roles())
+
+        with open('data/parsed/UNCERTAIN_roles_' + file_name, 'w') as outfile:
+            json.dump(data, outfile, indent=4)
+
+        print("Data saved in {}\n".format('data/parsed/UNCERTAIN_roles_' + file_name))

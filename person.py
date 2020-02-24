@@ -12,10 +12,15 @@ class Person:
         self.name = person_name
         self.socials = Social(person_socials)
         self.positions = Positions()
+        self.uncertain_positions = Positions()
 
         roles = Role.detect_roles(unclear_role)
+
         for role in roles:
             self.positions.add(ico_name, ico_token, ico_url, role)
+
+        if len(roles) == 1 and "UNCERTAIN" in roles:
+            self.uncertain_positions.add(ico_name, ico_token, ico_url, unclear_role)
 
 
     @staticmethod
@@ -34,8 +39,12 @@ class Person:
         self.socials.update(person_socials)
         
         roles = Role.detect_roles(unclear_role)
+
         for role in roles:
             self.positions.add(ico_name, ico_token, ico_url, role)
+
+        if len(roles) == 1 and "UNCERTAIN" in roles:
+            self.uncertain_positions.add(ico_name, ico_token, ico_url, unclear_role)
 
 
     def get_count_roles(self):
@@ -55,3 +64,15 @@ class Person:
 
         return data
 
+    def has_uncertain_roles(self):
+        return not self.uncertain_positions.is_empty()
+
+    
+    def get_data_uncertain_roles(self):
+        data = dict()
+
+        data["name"] = self.name
+        data["socials"] = list(self.socials.get_socials())
+        data["positions"] = self.uncertain_positions.get_data()
+
+        return data
