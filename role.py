@@ -38,7 +38,7 @@ class Role:
                 head = " ".join(unclear_role.split(" ")[:math.ceil(middle_space)])
                 tail = " ".join(unclear_role.split(" ")[math.ceil(middle_space):])
 
-                return get_roles(head) | get_roles(head) 
+                return get_roles(head) | get_roles(tail) 
 
             else:
                 return set(["UNCERTAIN"])
@@ -50,7 +50,7 @@ class Role:
 
         if len(roles) > 1 and "UNCERTAIN" in roles:
             roles.discard("UNCERTAIN")
-
+            
         return roles
 
         

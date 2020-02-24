@@ -9,9 +9,11 @@ def merge_dict(dict1, dict2):
  
    return dict3
 
+
 def print_dict(d):
     for key, value in d.items():
         print("\t{}\t{}".format(value, key))
+
 
 def delete_unicode(string):
     string = string.replace(u'\u200c', '')
@@ -42,15 +44,15 @@ def normalize(string):
 
 
 def split_strings_by_separators(string_list, separators):
-    new_list = []
+    new_string_list = []
 
     for string in string_list:
-        new_list = new_list + string.split(separators[0])
+        new_string_list = new_string_list + string.split(separators[0])
 
     if len(separators) > 1:
-        new_list = new_list + split_strings_by_separators(new_list, separators[1:])
+        return split_strings_by_separators(new_string_list, separators[1:])
 
-    return new_list
+    return new_string_list
 
 
 # string_to_list splits different string to list like this:
