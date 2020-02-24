@@ -152,12 +152,7 @@ ROLES = [
             "name": "UKNOWN",
             "examples": [
                 "",
-                " ",
-                "BLOCKCHAIN",
-                "ICO",
-                "INITIAL COIN OFFERING",
-                "USER INTERFACE",
-                "USER EXPERIENCE",
+                " "
             ]
         },
         {
