@@ -64,8 +64,10 @@ class Positions:
                 if role.name not in roles:
                     roles.add(role.name)
         
+        #if there are 3 roles, and 2 are "UNCERTAIN" and "UKNOWN", is possible to conform all roles to the remaining one 
         fixable = len(roles) == 3 and "UNCERTAIN" in roles and "UKNOWN" in roles
-        fixable = fixable or (len(roles) == 2 and ("UNCERTAIN" in roles or "UKNOWN" in roles))
+        #if there are 2 roles, and 1 AND ONLY ONE are "UNCERTAIN" or "UKNOWN", is possible to conform all roles to the remaining one
+        fixable = fixable or (len(roles) == 2 and ("UNCERTAIN" in roles or "UKNOWN" in roles) and not ("UNCERTAIN" in roles and "UKNOWN" in roles))
 
         if fixable:
             if "UNCERTAIN" in roles:
