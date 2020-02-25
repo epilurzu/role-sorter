@@ -48,7 +48,7 @@ class Person:
 
 
     def get_count_roles(self):
-        return self.positions.count()
+        return self.positions.get_count_roles()
 
 
     def get_count_people_by_role_name(self):
