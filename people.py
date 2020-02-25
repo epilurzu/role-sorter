@@ -40,7 +40,8 @@ class People:
             if icos.index(ico) != 0 and (icos.index(ico) % 100) == 0:
                 print("{} ICOs analyzed out of {}".format(str(icos.index(ico)), str(len(icos))))
 
-        print("Done.\n")
+        for person in people:
+            person.roles_check()
 
         People.people = people
         People.people_with_uncertain_roles = People.__get_people_with_uncertain_roles()
@@ -48,7 +49,9 @@ class People:
         People.count_people = len(People.people)
         People.count_roles = People.__get_count_roles()
         People.count_people_by_role_name = People.__get_count_people_by_role_name()
-        People.count_people_by_role_count = People.__get_count_people_by_role_count()   
+        People.count_people_by_role_count = People.__get_count_people_by_role_count()
+
+        print("Done.\n")
 
 
     @staticmethod

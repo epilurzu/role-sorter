@@ -56,6 +56,36 @@ class Positions:
                     self.positions[index][1].remove(role)
 
 
+    def roles_check(self):
+        roles = set([])
+
+        for position in self.positions:
+            for role in position[1]:
+                if role.name not in roles:
+                    roles.add(role.name)
+        
+        fixable = len(roles) == 3 and "UNCERTAIN" in roles and "UKNOWN" in roles
+        fixable = fixable or (len(roles) == 2 and ("UNCERTAIN" in roles or "UKNOWN" in roles))
+
+        if fixable:
+            if "UNCERTAIN" in roles:
+                roles.remove("UNCERTAIN")
+            if "UKNOWN" in roles:
+                roles.remove("UKNOWN")
+
+            role_name = roles.pop()
+
+            self.__conform_roles(role_name)
+
+
+    def __conform_roles(self, role_name):
+        for position in self.positions:
+            roles = []
+            roles.append(Role(role_name))
+
+            position = (position[0], roles)
+
+
     def is_empty(self):
         return len(self.positions) == 0
 
