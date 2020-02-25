@@ -1,5 +1,5 @@
 from person import Person
-from utils import merge_dict
+from utils import progress, merge_dict
 
 import json
 
@@ -18,6 +18,8 @@ class People:
         people = []
 
         print("Analyzing ICOs...")
+        print()
+        progress(0, len(icos))
 
         for ico in icos:
             ico_name = ico["name"]
@@ -37,8 +39,7 @@ class People:
                 else:
                     people.append(Person(person_name, person_socials, ico_name, ico_token, ico_url, person_role))
 
-            if icos.index(ico) != 0 and (icos.index(ico) % 100) == 0:
-                print("{} ICOs analyzed out of {}".format(str(icos.index(ico)), str(len(icos))))
+            progress((icos.index(ico) + 1), len(icos))
 
         for person in people:
             person.roles_check()

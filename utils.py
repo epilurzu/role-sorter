@@ -1,4 +1,5 @@
 import re
+import sys
 
 #Merge dictionaries and sum values of common keys in list
 def merge_dict(dict1, dict2):
@@ -71,3 +72,13 @@ def string_to_list(string):
     string_list = [re.sub("\s+", " ", string_list) for string_list in string_list]  # multiple spaces as one
 
     return string_list
+
+def progress(count, total):
+    bar_len = 60
+    filled_len = int(round(bar_len * count / float(total)))
+
+    percents = round(100.0 * count / float(total), 1)
+    bar = '=' * filled_len + '-' * (bar_len - filled_len)
+
+    sys.stdout.write('[%s] %s%s\r' % (bar, percents, '%'))
+    sys.stdout.flush()
