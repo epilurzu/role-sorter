@@ -14,10 +14,10 @@ class People:
     count_people_by_role_count = dict()
 
     @staticmethod
-    def get_people_from_raw_data(icos):
+    def get_people_from_raw_data(icos, file_name):
         people = []
 
-        print("Analyzing ICOs...")
+        print("Analyzing ICOs in %s..." % file_name)
         print()
         progress(0, len(icos))
 
@@ -52,7 +52,7 @@ class People:
         People.count_people_by_role_name = People.__get_count_people_by_role_name()
         People.count_people_by_role_count = People.__get_count_people_by_role_count()
 
-        print("Done.\n")
+        print("\n\nDone.\n")
 
 
     @staticmethod
@@ -112,7 +112,7 @@ class People:
         with open('data/parsed/' + file_name, 'w') as outfile:
             json.dump(data, outfile, indent=4)
 
-        print("Data saved in {}\n".format('data/parsed/' + file_name))
+        print("Data saved in %s" % ('data/parsed/' + file_name))
 
     
     @staticmethod
@@ -126,4 +126,4 @@ class People:
         with open('data/parsed/UNCERTAIN_roles_' + file_name, 'w') as outfile:
             json.dump(data, outfile, indent=4)
 
-        print("Data saved in {}\n".format('data/parsed/UNCERTAIN_roles_' + file_name))
+        print("Data saved in %s" % ('data/parsed/UNCERTAIN_roles_' + file_name))
