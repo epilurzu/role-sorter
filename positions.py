@@ -42,9 +42,17 @@ class Positions:
             else:
                 roles.add(role.name)
 
-        if len(roles) > 1 and "UNCERTAIN" in roles:
+        if len(roles) > 2 and "UNCERTAIN" in roles and "UKNOWN" in roles:
             for role in self.positions[index][1][:]: # note the [:] creates a slice
                 if role.name == "UNCERTAIN":
+                    self.positions[index][1].remove(role)
+                elif role.name == "UKNOWN":
+                    self.positions[index][1].remove(role)
+        elif len(roles) > 1 and ("UNCERTAIN" in roles or "UKNOWN" in roles):
+            for role in self.positions[index][1][:]: # note the [:] creates a slice
+                if role.name == "UNCERTAIN":
+                    self.positions[index][1].remove(role)
+                elif role.name == "UKNOWN":
                     self.positions[index][1].remove(role)
 
 
