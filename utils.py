@@ -12,7 +12,7 @@ def merge_dict(dict1, dict2):
 
 
 def print_dict(d):
-    for key, value in d.items():
+    for key, value in sorted(d.items()):
         print("\t{}\t{}".format(value, key))
 
 
