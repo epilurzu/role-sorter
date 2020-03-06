@@ -63,7 +63,7 @@ def string_to_list(string):
     string = normalize(string)
 
     string_list = [string]
-    separators = [",", " AND ", "&", "/", "\\"]
+    separators = [",", " AND ", "&", "/", "\\", "-"]
 
     string_list = split_strings_by_separators(string_list, separators)# various splits
     string_list = [re.sub("[^ A-Z]+", "", string_list) for string_list in string_list]  # remove all special chars and numbers
