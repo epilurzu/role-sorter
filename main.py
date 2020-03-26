@@ -1,6 +1,7 @@
 import json
 from people import People
 from utils import print_dict, create_uncertain_csv
+import time
 
 def analize(file_name):
     with open('data/raw/' + file_name, 'r') as file:
@@ -27,15 +28,24 @@ def analize(file_name):
 
 
 def ended():
+    t0 = time.time()
     analize("ICOBench_ended_2019-09-19.json")
+    t1 = time.time()
+    print("\nAnalysis time for ended file: %s seconds\n\n" % (t1-t0))
 
 
 def ongoing():
+    t0 = time.time()
     analize("ICOBench_ongoing_2019-09-19.json")
+    t1 = time.time()
+    print("\nAnalysis time for ongoing file: %s seconds\n\n" % (t1-t0))
 
 
 def upcoming():
+    t0 = time.time()
     analize("ICOBench_upcoming_2019-09-19.json")
+    t1 = time.time()
+    print("\nAnalysis time for upcoming file: %s seconds\n\n" % (t1-t0))
 
 
 def all():
