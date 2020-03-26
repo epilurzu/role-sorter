@@ -20,6 +20,7 @@ def delete_unicode(string):
     string = string.replace(u'\u200c', '')
     string = string.replace(u'\u200e', '')
     string = string.replace(u'\u2013', '')
+    string = string.replace(u'\u2014', '')
 
     return string
 
