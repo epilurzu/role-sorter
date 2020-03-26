@@ -1,3 +1,5 @@
+from constant import THRESHOLD
+
 import re
 import glob
 import sys
@@ -43,6 +45,10 @@ def normalize(string):
     string = delete_unicode(string)  # remove weird unicodes
     string = string.upper()  # all uppercase
     string = cyrillic_to_english(string)  # convert cyrillic
+    #string = re.sub("[^ A-Z]+", "", string)  # remove all special chars and numbers
+    #string = [re.sub(r"\b[A-Z]\b", "", string) # remove single char
+    string = string.strip()  # remove useless spaces
+    string = re.sub("\s+", " ", string)  # multiple spaces as one
 
     return string
 
@@ -59,22 +65,29 @@ def split_strings_by_separators(string_list, separators):
     return new_string_list
 
 
-# string_to_list splits different string to list like this:
-# ""1# Advisor & 2# ceo"" ---> ["ADVISOR", "CEO"]
-def string_to_list(string):
+def string_to_list(normalized_string):
 
-    string = normalize(string)
+    string_list = [normalized_string]
+    separators = [" ", ",", " AND ", "&", "/", "\\", "-"]
 
-    string_list = [string]
-    separators = [",", " AND ", "&", "/", "\\", "-"]
-
-    string_list = split_strings_by_separators(string_list, separators)# various splits
-    string_list = [re.sub("[^ A-Z]+", "", string_list) for string_list in string_list]  # remove all special chars and numbers
-    string_list = [re.sub(r"\b[A-Z]\b", "", string_list) for string_list in string_list] # remove single char
-    string_list = [string_list.strip() for string_list in string_list]  # remove useless spaces
-    string_list = [re.sub("\s+", " ", string_list) for string_list in string_list]  # multiple spaces as one
+    string_list = split_strings_by_separators(string_list, separators) # various splits
+    string_list = " ".join(string_list).split()   #remove empty strings from list
+    strins_list = "".join(string_list).split()    #remove empty strings from list
 
     return string_list
+
+
+def get_threshold(n):
+    keys = list(THRESHOLD.keys())
+
+    for i in range(0, len(keys) - 1):
+        if n == keys[i] or n > keys[i]:
+            if n < keys[i + 1]:
+                return THRESHOLD[keys[i]]
+    
+    
+    return THRESHOLD[keys[-1]]
+
 
 def progress(count, total):
     bar_len = 60
@@ -85,6 +98,7 @@ def progress(count, total):
 
     sys.stdout.write('[%s] %s%s\r' % (bar, percents, '%'))
     sys.stdout.flush()
+
 
 def create_uncertain_csv():
     dir = "data/parsed/"

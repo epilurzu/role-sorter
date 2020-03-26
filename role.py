@@ -1,5 +1,5 @@
 from constant import *
-from utils import string_to_list
+from utils import normalize, string_to_list, get_threshold
 
 import math
 from Levenshtein import distance
@@ -12,46 +12,39 @@ class Role:
 
     @staticmethod
     def detect_roles(unclear_role):
+        unclear_role = normalize(unclear_role)
 
-        def get_roles(unclear_role):
-
-            best_fit_role = ""
-            best_distance = MIN_DISTANCE
-
-            for role in ROLES:
-                examples = role['examples']
-
-                for example in examples:
-
-                    dis = distance(example, unclear_role)
-
-                    if dis < best_distance:
-                        best_distance = dis
-                        best_fit_role = role['name']
-
-            if best_distance < MIN_DISTANCE:
-                return set([best_fit_role])
-
-            elif ' ' in unclear_role:
-                middle_space = (len(unclear_role.split(" ")) - 1) / 2
-
-                head = " ".join(unclear_role.split(" ")[:math.ceil(middle_space)])
-                tail = " ".join(unclear_role.split(" ")[math.ceil(middle_space):])
-
-                return get_roles(head) | get_roles(tail) 
-
-            else:
-                return set(["UNCERTAIN"])
-
+        for role in ALL_ROLES:
+            examples = role['examples']
+            for example in examples:
+                if unclear_role == example:
+                    return set([role["name"]])
+        
+        terms = string_to_list(unclear_role)
         roles = set([])
 
-        for role in string_to_list(unclear_role):
-            roles = roles | get_roles(role)
-
-        if len(roles) > 1 and "UNCERTAIN" in roles:
-            roles.discard("UNCERTAIN")
-            
-        return roles
-
+        for term in terms:
+            if term in TERMS_ROLES:
+                roles = roles | set([TERMS_ROLES[term]])
         
+        if roles:
+            return roles
 
+        for term in terms:
+            threshold = get_threshold(len(term))
+            best_fit_term = ""
+
+            for example, role in TERMS_ROLES.items():
+                dis = distance(example, term)
+
+                if dis < threshold or dis == threshold:
+                        threshold = dis
+                        best_fit_term = example
+            
+            if best_fit_term:
+                roles = roles | set([TERMS_ROLES[best_fit_term]])
+
+        if roles:
+            return roles
+        
+        return set(["UNCERTAIN"])
