@@ -1,6 +1,6 @@
 import json
 from people import People
-from utils import print_dict
+from utils import print_dict, create_uncertain_csv
 
 def analize(file_name):
     with open('data/raw/' + file_name, 'r') as file:
@@ -63,3 +63,7 @@ print()
     "9": all
     
 }[choice]()
+
+create_uncertain_csv()
+
+print("All UNCERTAIN roles saved in data/parsed/UNCERTAIN.csv")

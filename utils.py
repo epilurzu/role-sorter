@@ -1,5 +1,7 @@
 import re
+import glob
 import sys
+import json
 
 #Merge dictionaries and sum values of common keys in list
 def merge_dict(dict1, dict2):
@@ -83,3 +85,29 @@ def progress(count, total):
 
     sys.stdout.write('[%s] %s%s\r' % (bar, percents, '%'))
     sys.stdout.flush()
+
+def create_uncertain_csv():
+    dir = "data/parsed/"
+    files = []
+
+    for file in glob.glob(dir + "*UNCERTAIN_*.json"):
+        files.append(file)
+
+    people = []
+
+    for file in files:
+        with open(file, 'r') as f:
+                people += json.load(f)["people"]
+
+    roles = dict()
+
+    for person in people:
+        for position in person["positions"]:
+            for role in position["roles"]:
+                if not role in roles:
+                    roles[role] = 0
+                roles[role] += 1
+
+    with open(dir + "UNCERTAIN.csv", 'w') as f:
+        for role, count in sorted(roles.items(), key=lambda item: item[1], reverse=True):
+            f.write("%s,%s\n"%(count, role))
