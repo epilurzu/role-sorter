@@ -90,3 +90,9 @@ venv.bak/
 
 # Temp code runner file
 tempCodeRunnerFile.py
+
+# Data, raw and parsed
+data/parsed/*
+!data/parsed/.gitkeep
+data/raw/*
+!data/raw/.gitkeep
