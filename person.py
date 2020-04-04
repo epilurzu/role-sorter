@@ -46,6 +46,7 @@ class Person:
         if len(roles) == 1 and "UNCERTAIN" in roles:
             self.uncertain_positions.add(ico_name, ico_token, ico_url, unclear_role)
 
+
     def roles_check(self):
         self.positions.roles_check()
 
@@ -66,6 +67,7 @@ class Person:
         data["positions"] = self.positions.get_data()
 
         return data
+
 
     def has_uncertain_roles(self):
         return not self.uncertain_positions.is_empty()
